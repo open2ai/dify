@@ -444,6 +444,7 @@ const Main: FC<IMainProps> = ({
         currentId={currConversationId}
         copyRight={siteInfo.copyright || siteInfo.title}
         isInstalledApp={isInstalledApp}
+        siteInfo={siteInfo}
       />
     )
   }
@@ -456,18 +457,29 @@ const Main: FC<IMainProps> = ({
 
   return (
     <div className='bg-gray-100'>
-      <Header
-        title={siteInfo.title}
-        icon={siteInfo.icon || ''}
-        icon_background={siteInfo.icon_background || '#FFEAD5'}
-        isMobile={isMobile}
-        onShowSideBar={showSidebar}
-        onCreateNewChat={() => handleConversationIdChange('-1')}
-      />
+      {!isInstalledApp && (
+        <Header
+          title={siteInfo.title}
+          icon={siteInfo.icon || ''}
+          icon_background={siteInfo.icon_background}
+          isMobile={isMobile}
+          onShowSideBar={showSidebar}
+          onCreateNewChat={() => handleConversationIdChange('-1')}
+        />
+      )}
+      
       {/* {isNewConversation ? 'new' : 'exist'}
         {JSON.stringify(newConversationInputs ? newConversationInputs : {})}
         {JSON.stringify(existConversationInputs ? existConversationInputs : {})} */}
-      <div className="flex rounded-t-2xl bg-white overflow-hidden">
+      <div 
+        className={cn(
+          "flex rounded-t-2xl bg-white overflow-hidden",
+          isInstalledApp && 'rounded-b-2xl',
+        )}
+        style={isInstalledApp ? {
+          boxShadow: '0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03)'
+        } : {}}
+      >
         {/* sidebar */}
         {!isMobile && renderSidebar()}
         {isMobile && isShowSidebar && (
